@@ -1,0 +1,38 @@
+version: '3.1'
+# +------------------------------------------------------------
+# | (C) Antonio Maulucci 2024
+# +------------------------------------------------------------
+# | SQL Injection Lab
+# |
+# |
+# |
+# |
+# +------------------------------------------------------------
+services:
+    database:
+        build:
+            context: ./mysql
+            # progress: plain
+        image: sqli_lab_mysql
+        container_name: sqli_lab_mysql_container
+        environment:
+            - MYSQL_ROOT_USER=root
+            - MYSQL_ROOT_PASSWORD=pass
+            # MYSQL_DATABASE: homestead
+            # MYSQL_USER: root
+            # MYSQL_PASSWORD: secret
+        networks:
+            - mynet
+        ports:
+            - 127.0.0.1:9936:3306
+        volumes:
+            - ./mysql/init.sql:/docker-entrypoint-initdb.d/setup.sql
+        logging:
+            options:
+                max-size: 50m
+        tty: true
+        restart: unless-stopped
+        # command: --init-file /data/application/init.sql
+networks:
+    mynet:
+        driver: bridge
